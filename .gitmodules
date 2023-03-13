@@ -1,0 +1,3 @@
+[submodule "Pinecone"]
+	path = Pinecone
+	url = https://github.com/marc-crAIE/Pinecone.git

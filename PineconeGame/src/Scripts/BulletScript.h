@@ -15,6 +15,7 @@ namespace AsteroidsGame
 		void OnDestroy() override;
 		void OnUpdate(Timestep ts) override;
 	private:
+		void CheckAsteroidCollision();
 		void MoveOntoScreen();
 	private:
 		float m_Angle;

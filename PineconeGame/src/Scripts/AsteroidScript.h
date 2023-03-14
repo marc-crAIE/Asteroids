@@ -15,6 +15,8 @@ namespace AsteroidsGame
 		void OnDestroy() override;
 		void OnUpdate(Timestep ts) override;
 	private:
+		void MoveOntoScreen();
+	private:
 		float m_Angle;
 		glm::vec3 m_Velocity;
 

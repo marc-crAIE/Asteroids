@@ -47,6 +47,7 @@ namespace AsteroidsGame
 			m_LastShot = 0.0f;
 		}
 
+		m_Velocity *= m_SlowDownSpeed;
 		transform.Translation += m_Velocity;
 		transform.Rotation = glm::radians(glm::vec3(0.0f, 0.0f, m_Rotation - 90.0f)); // Offset rotation by -90 degrees because of the texture
 

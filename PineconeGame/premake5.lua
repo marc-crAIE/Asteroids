@@ -15,6 +15,7 @@ project "PineconeGame"
 
 	includedirs
 	{
+		"src",
 		"%{wks.location}/Pinecone/Pinecone/vendor/spdlog/include",
 		"%{wks.location}/Pinecone/Pinecone/src",
 		"%{wks.location}/Pinecone/Pinecone/vendor",

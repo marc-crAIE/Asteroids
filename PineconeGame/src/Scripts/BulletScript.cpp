@@ -1,5 +1,7 @@
 #include "BulletScript.h"
 
+#include "Utils/Physics2D.h"
+
 namespace AsteroidsGame
 {
 	BulletScript::BulletScript(float angle)
@@ -29,7 +31,26 @@ namespace AsteroidsGame
 
 		m_Lifetime += ts;
 		if (m_Lifetime >= m_MaxLifetime)
+		{
 			GetScene()->DestroyGameObject(GetGameObject());
+			return;
+		}
+
+		CheckAsteroidCollision();
+	}
+
+	void BulletScript::CheckAsteroidCollision()
+	{
+		auto asteroids = GetScene()->GetGameObjectsByTag("Asteroid");
+		for (GameObject asteroid : asteroids)
+		{
+			if (Physics2D::CheckRectCollision(GetGameObject(), asteroid))
+			{
+				GetScene()->DestroyGameObject(asteroid);
+				GetScene()->DestroyGameObject(GetGameObject());
+				return;
+			}
+		}
 	}
 
 	void BulletScript::MoveOntoScreen()

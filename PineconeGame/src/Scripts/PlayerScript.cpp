@@ -4,6 +4,7 @@
 
 namespace AsteroidsGame
 {
+
 	void PlayerScript::OnCreate()
 	{
 		m_NormalTexture = Texture2D::Create("assets/textures/PlayerNormal.png");
@@ -59,7 +60,6 @@ namespace AsteroidsGame
 		auto& transform = GetComponent<TransformComponent>();
 
 		GameObject bullet = GetScene()->CreateGameObject("Bullet");
-		bullet.AddComponent<SpriteComponent>();
 		bullet.GetComponent<TransformComponent>().Translation = transform.Translation;
 		bullet.AddComponent<NativeScriptComponent>().Bind<BulletScript>(m_Rotation);
 	}

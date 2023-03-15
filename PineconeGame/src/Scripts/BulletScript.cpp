@@ -1,5 +1,6 @@
 #include "BulletScript.h"
 
+#include "AsteroidScript.h"
 #include "Utils/Physics2D.h"
 
 namespace AsteroidsGame
@@ -12,6 +13,7 @@ namespace AsteroidsGame
 
 	void BulletScript::OnCreate()
 	{
+		AddComponent<SpriteComponent>();
 		auto& transform = GetComponent<TransformComponent>();
 		transform.Scale = m_Size;
 		transform.Rotation = { 0.0f, 0.0f, glm::radians(m_Angle) };
@@ -25,7 +27,7 @@ namespace AsteroidsGame
 	{
 		auto& transform = GetComponent<TransformComponent>();
 
-		transform.Translation += m_Velocity * m_Speed * (float)ts;
+		transform.Translation += GetVelocity() * (float)ts;
 
 		MoveOntoScreen();
 
@@ -36,17 +38,19 @@ namespace AsteroidsGame
 			return;
 		}
 
-		CheckAsteroidCollision();
+		CheckAsteroidCollision(ts);
 	}
 
-	void BulletScript::CheckAsteroidCollision()
+	void BulletScript::CheckAsteroidCollision(Timestep ts)
 	{
 		auto asteroids = GetScene()->GetGameObjectsByTag("Asteroid");
 		for (GameObject asteroid : asteroids)
 		{
-			if (Physics2D::CheckRectCollision(GetGameObject(), asteroid))
+			AsteroidScript* asteroidScript = (AsteroidScript*)asteroid.GetComponent<NativeScriptComponent>().Instance;
+			if (Physics2D::CheckCircleCollision(GetGameObject(), asteroid))//m_Velocity * m_Speed * (float)ts, asteroidScript->GetVelocity() * (float)ts))
 			{
-				GetScene()->DestroyGameObject(asteroid);
+				asteroidScript->Destroy();
+
 				GetScene()->DestroyGameObject(GetGameObject());
 				return;
 			}

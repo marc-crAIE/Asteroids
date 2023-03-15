@@ -15,8 +15,10 @@ namespace AsteroidsGame
 		void OnDestroy() override;
 		void OnUpdate(Timestep ts) override;
 	private:
-		void CheckAsteroidCollision();
+		void CheckAsteroidCollision(Timestep ts);
 		void MoveOntoScreen();
+
+		glm::vec3 GetVelocity() const { return m_Velocity * m_Speed; }
 	private:
 		float m_Angle;
 		glm::vec3 m_Velocity;
@@ -24,7 +26,7 @@ namespace AsteroidsGame
 
 		const glm::vec3 m_Size = { 0.1f, 0.1f, 0.1f };
 
-		const float m_Speed = 15.0f;
+		const float m_Speed = 18.0f;
 		const float m_MaxLifetime = 2.0f;
 	};
 }

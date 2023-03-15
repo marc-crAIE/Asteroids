@@ -2,6 +2,7 @@
 #include <Pinecone/Core/EntryPoint.h>
 
 #include "GameLayer.h"
+#include "Utils/Resources.h"
 
 using namespace Pinecone;
 
@@ -14,6 +15,8 @@ namespace PineconeGame
 			: Application()
 		{
 			srand(time(NULL));
+
+			AsteroidsGame::Resources::Init();
 
 			PushLayer(new AsteroidsGame::GameLayer());
 		}

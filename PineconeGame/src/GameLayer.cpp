@@ -14,7 +14,7 @@ namespace AsteroidsGame
 	{
 		RenderCommand::SetClearColor({ 0.05f, 0.05f, 0.05f, 1.0f });
 
-		PC_CORE_ASSERT(!s_Instance, "The Game Layer already exists!");
+		PC_ASSERT(!s_Instance, "The Game Layer already exists!");
 		s_Instance = this;
 
 		m_ActiveScene = CreateRef<Scene>();

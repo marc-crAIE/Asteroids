@@ -16,6 +16,8 @@ namespace AsteroidsGame
 		int GetLives() const { return m_Lives; }
 	private:
 		void ShootBullet();
+		void CheckAsteroidCollision();
+		void RemoveLife();
 		void MovePlayerOntoScreen();
 	private:
 		Ref<Texture2D> m_NormalTexture;
@@ -23,11 +25,15 @@ namespace AsteroidsGame
 
 		glm::vec3 m_Velocity = { 0.0f, 0.0f, 0.0f };
 		float m_Rotation = 0.0f;
-		int m_Lives = 3;
+		int m_Lives = 5;
+
+		bool m_Invulnerable = false;
+		float m_InvulnerabilityTime = 0.0f;
 
 		const float m_Speed = 0.2f;
 		const float m_RotationSpeed = 220.0f;
-		const float m_SlowDownSpeed = 0.992f;
+		const float m_SlowDownSpeed = 0.994f;
+		const float m_MaxInvulnerability = 2.5f;
 
 		const float m_ShootCooldown = 0.5f;
 		float m_LastShot = m_ShootCooldown;

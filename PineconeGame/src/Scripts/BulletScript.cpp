@@ -40,10 +40,10 @@ namespace AsteroidsGame
 			return;
 		}
 
-		CheckAsteroidCollision(ts);
+		CheckAsteroidCollision();
 	}
 
-	void BulletScript::CheckAsteroidCollision(Timestep ts)
+	void BulletScript::CheckAsteroidCollision()
 	{
 		auto asteroids = GetScene()->GetGameObjectsByTag("Asteroid");
 		for (GameObject asteroid : asteroids)

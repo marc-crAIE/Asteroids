@@ -1,10 +1,12 @@
 #include "PlayerScript.h"
 
+#include "AsteroidScript.h"
 #include "BulletScript.h"
+#include "GameLayer.h"
+#include "Utils/Physics2D.h"
 
 namespace AsteroidsGame
 {
-
 	void PlayerScript::OnCreate()
 	{
 		m_NormalTexture = Texture2D::Create("assets/textures/PlayerNormal.png");
@@ -35,17 +37,38 @@ namespace AsteroidsGame
 			sprite.Texture = m_NormalTexture;
 		}
 
+		if (m_Invulnerable)
+		{
+			m_InvulnerabilityTime += ts;
+
+			if (m_InvulnerabilityTime >= m_MaxInvulnerability)
+			{
+				m_Invulnerable = false;
+				sprite.Color.a = 1.0f;
+			}
+			else if ((int)(m_InvulnerabilityTime * 10) % 2 == 0)
+				sprite.Color.a = 0.0f;
+			else
+				sprite.Color.a = 1.0f;
+		}
+
 		if (Input::IsKeyPressed(Key::A))
 			m_Rotation += m_RotationSpeed * ts;
 
 		if (Input::IsKeyPressed(Key::D))
 			m_Rotation -= m_RotationSpeed * ts;
 
-		m_LastShot += ts;
-		if (Input::IsKeyPressed(Key::Space) && m_LastShot >= m_ShootCooldown)
+		// If we are invulnerable, we don't want the player to be able to shoot or get damaged
+		if (!m_Invulnerable)
 		{
-			ShootBullet();
-			m_LastShot = 0.0f;
+			m_LastShot += ts;
+			if (Input::IsKeyPressed(Key::Space) && m_LastShot >= m_ShootCooldown)
+			{
+				ShootBullet();
+				m_LastShot = 0.0f;
+			}
+
+			CheckAsteroidCollision();
 		}
 
 		m_Velocity *= m_SlowDownSpeed;
@@ -62,6 +85,31 @@ namespace AsteroidsGame
 		GameObject bullet = GetScene()->CreateGameObject("Bullet");
 		bullet.GetComponent<TransformComponent>().Translation = transform.Translation;
 		bullet.AddComponent<NativeScriptComponent>().Bind<BulletScript>(m_Rotation);
+	}
+
+	void PlayerScript::CheckAsteroidCollision()
+	{
+		auto asteroids = GetScene()->GetGameObjectsByTag("Asteroid");
+		for (GameObject asteroid : asteroids)
+		{
+			AsteroidScript* asteroidScript = (AsteroidScript*)asteroid.GetComponent<NativeScriptComponent>().Instance;
+			if (Physics2D::CheckCircleCollision(GetGameObject(), asteroid))
+			{
+				asteroidScript->Destroy();
+				RemoveLife();
+				return;
+			}
+		}
+	}
+
+	void PlayerScript::RemoveLife()
+	{
+		if (m_Lives > 0)
+			m_Lives--;
+		GetComponent<TransformComponent>().Translation = glm::vec3(0.0f);
+		m_Velocity = glm::vec3(0.0f);
+		m_Invulnerable = true;
+		m_InvulnerabilityTime = 0.0f;
 	}
 
 	void PlayerScript::MovePlayerOntoScreen()

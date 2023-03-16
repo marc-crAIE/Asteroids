@@ -6,8 +6,7 @@
 
 namespace AsteroidsGame
 {
-	static std::random_device s_RandomDevice;
-	static std::mt19937_64 s_Engine(s_RandomDevice());
+	static std::mt19937 s_Engine;
 	static std::uniform_int_distribution<int> s_UniformDistribution(0, 360);
 
 	void AsteroidSpawnerScript::OnCreate()

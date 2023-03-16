@@ -20,6 +20,8 @@ namespace AsteroidsGame
 
 		void DestroyGameObject(GameObject gameObject);
 
+		Ref<Scene> GetScene() { return m_ActiveScene; }
+
 		static GameLayer& Get() { return *s_Instance; }
 	private:
 		bool OnWindowResized(WindowResizeEvent& e);

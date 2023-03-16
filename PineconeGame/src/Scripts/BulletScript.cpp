@@ -1,6 +1,7 @@
 #include "BulletScript.h"
 
 #include "AsteroidScript.h"
+#include "GameLayer.h"
 #include "Utils/Physics2D.h"
 
 namespace AsteroidsGame
@@ -35,7 +36,7 @@ namespace AsteroidsGame
 		m_Lifetime += ts;
 		if (m_Lifetime >= m_MaxLifetime)
 		{
-			GetScene()->DestroyGameObject(GetGameObject());
+			GameLayer::Get().DestroyGameObject(GetGameObject());
 			return;
 		}
 
@@ -52,7 +53,7 @@ namespace AsteroidsGame
 			{
 				asteroidScript->Destroy();
 
-				GetScene()->DestroyGameObject(GetGameObject());
+				GameLayer::Get().DestroyGameObject(GetGameObject());
 				return;
 			}
 		}
@@ -71,6 +72,7 @@ namespace AsteroidsGame
 		float orthoTop = orthoSize * 0.5f;
 
 		auto& transform = GetComponent<TransformComponent>();
+
 		if (transform.Translation.x < orthoLeft)
 		{
 			transform.Translation.x = orthoRight;

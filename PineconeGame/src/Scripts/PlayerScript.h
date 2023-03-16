@@ -12,6 +12,8 @@ namespace AsteroidsGame
 		void OnCreate() override;
 		void OnDestroy() override;
 		void OnUpdate(Timestep ts) override;
+
+		int GetLives() const { return m_Lives; }
 	private:
 		void ShootBullet();
 		void MovePlayerOntoScreen();
@@ -21,6 +23,7 @@ namespace AsteroidsGame
 
 		glm::vec3 m_Velocity = { 0.0f, 0.0f, 0.0f };
 		float m_Rotation = 0.0f;
+		int m_Lives = 3;
 
 		const float m_Speed = 0.2f;
 		const float m_RotationSpeed = 220.0f;

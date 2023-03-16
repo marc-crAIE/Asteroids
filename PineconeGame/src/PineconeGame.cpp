@@ -2,6 +2,7 @@
 #include <Pinecone/Core/EntryPoint.h>
 
 #include "GameLayer.h"
+#include "UILayer.h"
 #include "Utils/Resources.h"
 
 using namespace Pinecone;
@@ -19,6 +20,7 @@ namespace PineconeGame
 			AsteroidsGame::Resources::Init();
 
 			PushLayer(new AsteroidsGame::GameLayer());
+			PushOverlay(new AsteroidsGame::UILayer());
 		}
 	};
 }

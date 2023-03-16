@@ -1,5 +1,6 @@
 #include "AsteroidScript.h"
 
+#include "GameLayer.h"
 #include "Utils/Resources.h"
 
 #include <random>
@@ -27,6 +28,7 @@ namespace AsteroidsGame
 
 	void AsteroidScript::OnCreate()
 	{
+		AddComponent<SpriteComponent>();
 		auto& transform = GetComponent<TransformComponent>();
 		transform.Rotation = glm::vec3(0.0f, 0.0f, s_UniformDistribution(s_Engine));
 		transform.Scale = glm::vec3(1.0f + (0.5f * m_Size));
@@ -49,7 +51,12 @@ namespace AsteroidsGame
 	{
 		if (m_Size != Size::Small)
 			Split();
-		GetScene()->DestroyGameObject(GetGameObject());
+
+		// Have to make the game layer destroy the asteroid after the update loop for the native scripts.
+		// Destroying the asteroid by calling "GetScene()->DestroyGameObject(GetGameObject());" seems to cause
+		// issues with the entt library entity handle ID for the bullet objects. Not exactly sure what is 
+		// causing the issue specifically but this seems to fix it.
+		GameLayer::Get().DestroyGameObject(GetGameObject());
 	}
 
 	void AsteroidScript::Split()
@@ -61,9 +68,6 @@ namespace AsteroidsGame
 
 		asteroidLeft.GetComponent<TransformComponent>().Translation = transform.Translation;
 		asteroidRight.GetComponent<TransformComponent>().Translation = transform.Translation;
-
-		asteroidLeft.AddComponent<SpriteComponent>();
-		asteroidRight.AddComponent<SpriteComponent>();
 
 		float splitAngle = rand() % (m_MaxSplitAngle - m_MinSplitAngle + 1) + m_MinSplitAngle;
 

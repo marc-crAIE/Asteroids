@@ -43,9 +43,7 @@ namespace AsteroidsGame
 		float aRadius = glm::dot(aTransform.Scale.x, aTransform.Scale.y);
 		float bRadius = glm::dot(bTransform.Scale.x, bTransform.Scale.y);
 
-		float r1 = aRadius * aRadius;
-		float r2 = bRadius * bRadius;
-		if (distance <= r1 + r2)
+		if (distance <= aRadius + bRadius)
 		{
 			return true;
 		}

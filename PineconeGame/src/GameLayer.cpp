@@ -1,13 +1,21 @@
 #include "GameLayer.h"
 
 #include "Scripts/PlayerScript.h"
+#include "Scripts/AsteroidScript.h"
 #include "Scripts/AsteroidSpawnerScript.h"
+
+#include <random>
 
 namespace AsteroidsGame
 {
+	GameLayer* GameLayer::s_Instance = nullptr;
+
 	void GameLayer::OnAttach()
 	{
 		RenderCommand::SetClearColor({ 0.05f, 0.05f, 0.05f, 1.0f });
+
+		PC_CORE_ASSERT(!s_Instance, "The Game Layer already exists!");
+		s_Instance = this;
 
 		m_ActiveScene = CreateRef<Scene>();
 
@@ -35,12 +43,23 @@ namespace AsteroidsGame
 		RenderCommand::Clear();
 
 		m_ActiveScene->OnUpdate(ts);
+
+		for (auto gameObject : m_GameObjectsToDestroy)
+		{
+			m_ActiveScene->DestroyGameObject(gameObject);
+		}
+		m_GameObjectsToDestroy.clear();
 	}
 
 	void GameLayer::OnEvent(Event& e)
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowResizeEvent>(PC_BIND_EVENT_FN(GameLayer::OnWindowResized));
+	}
+
+	void GameLayer::DestroyGameObject(GameObject gameObject)
+	{
+		m_GameObjectsToDestroy.push_back(gameObject);
 	}
 
 	bool GameLayer::OnWindowResized(WindowResizeEvent& e)

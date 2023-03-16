@@ -17,13 +17,21 @@ namespace AsteroidsGame
 
 		void OnUpdate(Timestep ts) override;
 		void OnEvent(Event& e) override;
+
+		void DestroyGameObject(GameObject gameObject);
+
+		static GameLayer& Get() { return *s_Instance; }
 	private:
 		bool OnWindowResized(WindowResizeEvent& e);
 	private:
 		Ref<Scene> m_ActiveScene;
 
+		std::vector<GameObject> m_GameObjectsToDestroy;
+
 		GameObject m_Camera;
 		GameObject m_Player;
 		GameObject m_AsteroidSpawner;
+	private:
+		static GameLayer* s_Instance;
 	};
 }

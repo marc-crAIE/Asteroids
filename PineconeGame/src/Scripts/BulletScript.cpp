@@ -13,6 +13,7 @@ namespace AsteroidsGame
 
 	void BulletScript::OnCreate()
 	{
+		// Adding the sprite component here stops the random "white square flash"
 		AddComponent<SpriteComponent>();
 		auto& transform = GetComponent<TransformComponent>();
 		transform.Scale = m_Size;
@@ -47,7 +48,7 @@ namespace AsteroidsGame
 		for (GameObject asteroid : asteroids)
 		{
 			AsteroidScript* asteroidScript = (AsteroidScript*)asteroid.GetComponent<NativeScriptComponent>().Instance;
-			if (Physics2D::CheckCircleCollision(GetGameObject(), asteroid))//m_Velocity * m_Speed * (float)ts, asteroidScript->GetVelocity() * (float)ts))
+			if (Physics2D::CheckCircleCollision(GetGameObject(), asteroid))
 			{
 				asteroidScript->Destroy();
 

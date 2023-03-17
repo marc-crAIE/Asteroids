@@ -11,7 +11,7 @@ namespace AsteroidsGame
 	class UILayer : public Layer
 	{
 	public:
-		UILayer() : Layer("UILayer") {}
+		UILayer();
 		~UILayer() = default;
 
 		void OnAttach() override;
@@ -20,8 +20,10 @@ namespace AsteroidsGame
 		void OnUpdate(Timestep ts) override;
 		void OnEvent(Event& e) override;
 	private:
-		void DrawLives(glm::vec4& screenDimensions);
+		void DrawLivesAndScore(glm::vec4& screenDimensions);
 	private:
 		PlayerScript* m_PlayerScript = nullptr;
+
+		Ref<Font> m_Font;
 	};
 }

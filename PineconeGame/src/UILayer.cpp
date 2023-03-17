@@ -5,6 +5,11 @@
 
 namespace AsteroidsGame
 {
+	UILayer::UILayer() : Layer("UILayer")
+	{
+		m_Font = Font::Create("assets/fonts/hyperspace/Hyperspace-Bold.ttf");
+	}
+
 	void UILayer::OnAttach()
 	{
 	}
@@ -38,7 +43,7 @@ namespace AsteroidsGame
 		// Begin the 2D renderer as we want to draw some stuff in 2D
 		Renderer2D::BeginScene(camera);
 
-		DrawLives(glm::vec4(orthoLeft, orthoRight, orthoTop, orthoBottom));
+		DrawLivesAndScore(glm::vec4(orthoLeft, orthoRight, orthoTop, orthoBottom));
 
 		// End the 2D renderer
 		Renderer2D::EndScene();
@@ -48,8 +53,9 @@ namespace AsteroidsGame
 	{
 	}
 
-	void UILayer::DrawLives(glm::vec4& screenDimensions)
+	void UILayer::DrawLivesAndScore(glm::vec4& screenDimensions)
 	{
+		const float scoreHeight = 1.0f;
 		const float offset = 1.0f;
 		const float separation = 0.25f;
 		float xPos = screenDimensions.x + offset;
@@ -57,9 +63,13 @@ namespace AsteroidsGame
 
 		glm::vec3 scale = glm::vec3(0.8f, 1.0f, 1.0f) * 0.75f;
 
+		glm::mat4 scorePos = glm::translate(glm::mat4(1.0f), glm::vec3(xPos - 0.25f, yPos, 1.0f))
+			* glm::scale(glm::mat4(1.0f), glm::vec3(scoreHeight));
+		Renderer2D::DrawString(std::to_string(GameLayer::Get().GetScore()), m_Font, scorePos, glm::vec4(1.0f));
+
 		for (int i = 0; i < m_PlayerScript->GetLives(); i++)
 		{
-			glm::vec3 pos = glm::vec3(xPos + ((scale.x + separation) * i), yPos, 1.0f);
+			glm::vec3 pos = glm::vec3(xPos + ((scale.x + separation) * i), yPos - (scoreHeight / 2 + separation), 1.0f);
 			glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos)
 				* glm::scale(glm::mat4(1.0f), scale);
 			Renderer2D::DrawQuad(transform, Resources::GetPlayerLifeTexture());

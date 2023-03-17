@@ -31,6 +31,7 @@ namespace AsteroidsGame
 
 		return collisionX && collisionY;
 	}
+
 	bool Physics2D::CheckCircleCollision(GameObject a, GameObject b)
 	{
 		auto& aTransform = a.GetComponent<TransformComponent>();

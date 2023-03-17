@@ -18,7 +18,7 @@ namespace AsteroidsGame
 		void OnDestroy() override;
 		void OnUpdate(Timestep ts) override;
 
-		void Destroy();
+		void Destroy(bool awardScore = true);
 
 		glm::vec3 GetVelocity() const { return m_Velocity * m_Speed; }
 	private:

@@ -47,10 +47,26 @@ namespace AsteroidsGame
 		MoveOntoScreen();
 	}
 
-	void AsteroidScript::Destroy()
+	void AsteroidScript::Destroy(bool awardScore)
 	{
 		if (m_Size != Size::Small)
 			Split();
+
+		if (awardScore)
+		{
+			switch (m_Size)
+			{
+			case Size::Small:
+				GameLayer::Get().IncreaseScore(100);
+				break;
+			case Size::Medium:
+				GameLayer::Get().IncreaseScore(50);
+				break;
+			case Size::Large:
+				GameLayer::Get().IncreaseScore(20);
+				break;
+			}
+		}
 
 		// Have to make the game layer destroy the asteroid after the update loop for the native scripts.
 		// Destroying the asteroid by calling "GetScene()->DestroyGameObject(GetGameObject());" seems to cause

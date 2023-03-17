@@ -58,11 +58,24 @@ namespace AsteroidsGame
 		if (Input::IsKeyPressed(Key::D))
 			m_Rotation -= m_RotationSpeed * ts;
 
+		if (m_HyperspaceCooldownTime < m_HypespaceCooldown)
+			m_HyperspaceCooldownTime += ts;
+
+		if (Input::IsKeyPressed(Key::V))
+		{
+			if (m_HyperspaceCooldownTime >= m_HypespaceCooldown)
+			{
+				Hyperspace();
+				m_HyperspaceCooldownTime = 0.0f;
+			}
+		}
+
 		// If we are invulnerable, we don't want the player to be able to shoot or get damaged
 		if (!m_Invulnerable)
 		{
+			auto bullets = GetScene()->GetGameObjectsByTag("Bullet");
 			m_LastShot += ts;
-			if (Input::IsKeyPressed(Key::Space) && m_LastShot >= m_ShootCooldown)
+			if (Input::IsKeyPressed(Key::Space) && m_LastShot >= m_ShootCooldown && bullets.size() < m_MaxShots)
 			{
 				ShootBullet();
 				m_LastShot = 0.0f;
@@ -95,11 +108,29 @@ namespace AsteroidsGame
 			AsteroidScript* asteroidScript = (AsteroidScript*)asteroid.GetComponent<NativeScriptComponent>().Instance;
 			if (Physics2D::CheckCircleCollision(GetGameObject(), asteroid))
 			{
-				asteroidScript->Destroy();
+				asteroidScript->Destroy(false);
 				RemoveLife();
 				return;
 			}
 		}
+	}
+
+	void PlayerScript::Hyperspace()
+	{
+		auto& camera = GetScene()->GetPrimaryCameraGameObject().GetComponent<CameraComponent>();
+
+		float orthoSize = camera.Camera.GetOrthographicSize();
+		float aspectRatio = camera.Camera.GetAspectRatio();
+
+		float orthoLeft = -orthoSize * aspectRatio * 0.5f;
+		float orthoRight = orthoSize * aspectRatio * 0.5f;
+		float orthoBottom = -orthoSize * 0.5f;
+		float orthoTop = orthoSize * 0.5f;
+
+		auto& transform = GetComponent<TransformComponent>();
+
+		transform.Translation.x = rand() % (int)(orthoRight - orthoLeft + 1) + orthoLeft;
+		transform.Translation.y = rand() % (int)(orthoTop - orthoBottom + 1) + orthoBottom;
 	}
 
 	void PlayerScript::RemoveLife()

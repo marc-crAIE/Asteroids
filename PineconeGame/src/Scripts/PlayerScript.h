@@ -16,6 +16,8 @@ namespace AsteroidsGame
 		void AddLife();
 		void RemoveLife();
 
+		void Reset();
+
 		int GetLives() const { return m_Lives; }
 	private:
 		void ShootBullet();

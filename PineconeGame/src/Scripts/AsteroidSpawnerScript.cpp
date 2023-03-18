@@ -1,6 +1,7 @@
 #include "AsteroidSpawnerScript.h"
 
 #include "AsteroidScript.h"
+#include "GameLayer.h"
 
 #include <random>
 
@@ -31,6 +32,11 @@ namespace AsteroidsGame
 				SpawnAsteroid();
 			}
 		}
+	}
+
+	void AsteroidSpawnerScript::Reset()
+	{
+		m_LastAsteroidSpawn = 0.0f;
 	}
 
 	void AsteroidSpawnerScript::SpawnAsteroid()

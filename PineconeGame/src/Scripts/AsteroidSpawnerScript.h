@@ -12,10 +12,12 @@ namespace AsteroidsGame
 		void OnCreate() override;
 		void OnDestroy() override;
 		void OnUpdate(Timestep ts) override;
+
+		void Reset();
 	private:
 		void SpawnAsteroid();
 	private:
-		float m_AsteroidSpawnTime = 2.5f;
+		const float m_AsteroidSpawnTime = 2.5f;
 		float m_LastAsteroidSpawn = 0.0f;
 
 		const float m_MaxAsteroids = 10.0f;

@@ -9,6 +9,7 @@
 namespace AsteroidsGame
 {
 	GameLayer* GameLayer::s_Instance = nullptr;
+	std::string GameLayer::s_GameObjectNames[] = { "Bullet", "EnemyBullet", "Asteroid", "Saucer" };
 
 	void GameLayer::OnAttach()
 	{
@@ -110,12 +111,45 @@ namespace AsteroidsGame
 		saucer.AddComponent<NativeScriptComponent>().Bind<SaucerScript>(type);
 	}
 
+	void GameLayer::ReplayGame()
+	{
+		m_Score = 0;
+		m_LevelScore = 0;
+		m_LargeSaucerSpawnTime = 0.0f;
+
+		m_GameObjectsToDestroy.clear();
+
+		for (std::string tag : s_GameObjectNames)
+		{
+			auto gameObjects = GetScene()->GetGameObjectsByTag(tag);
+			for (auto gameObject : gameObjects)
+			{
+				m_ActiveScene->DestroyGameObject(gameObject);
+			}
+		}
+
+		((PlayerScript*)m_Player.GetComponent<NativeScriptComponent>().Instance)->Reset();
+		((AsteroidSpawnerScript*)m_AsteroidSpawner.GetComponent<NativeScriptComponent>().Instance)->Reset();
+	}
+
 	bool GameLayer::OnKeyReleased(KeyReleasedEvent& e)
 	{
 		if (m_GameState == GameState::MainMenu)
 		{
 			if (e.GetKeyCode() == Key::Space)
+			{
 				SetState(GameState::Playing);
+				return true;
+			}
+		}
+		else if (m_GameState == GameState::GameOver)
+		{
+			if (e.GetKeyCode() == Key::Space)
+			{
+				SetState(GameState::Playing);
+				ReplayGame();
+				return true;
+			}
 		}
 		return false;
 	}

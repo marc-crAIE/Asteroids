@@ -41,6 +41,8 @@ namespace AsteroidsGame
 	private:
 		void SpawnSaucer(SaucerScript::Type type);
 
+		void ReplayGame();
+
 		bool OnKeyReleased(KeyReleasedEvent& e);
 		bool OnWindowResized(WindowResizeEvent& e);
 	private:
@@ -61,5 +63,6 @@ namespace AsteroidsGame
 		const float m_MaxLargeSaucerSpawnTime = 120.0f;
 	private:
 		static GameLayer* s_Instance;
+		static std::string s_GameObjectNames[];
 	};
 }

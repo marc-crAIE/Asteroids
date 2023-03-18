@@ -154,6 +154,21 @@ namespace AsteroidsGame
 		}
 	}
 
+	void PlayerScript::Reset()
+	{
+		auto& transform = GetComponent<TransformComponent>();
+		transform.Translation = { 0.0f, 0.0f, 0.0f };
+		transform.Rotation = { 0.0f, 0.0f, 0.0f };
+
+		m_Velocity = { 0.0f, 0.0f, 0.0f };
+		m_Rotation = 0.0f;
+		m_Lives = 5;
+		m_LastShot = m_ShootCooldown;
+		m_HyperspaceCooldownTime = m_HypespaceCooldown;
+		m_Invulnerable = false;
+		m_InvulnerabilityTime = 0.0f;
+	}
+
 	void PlayerScript::MovePlayerOntoScreen()
 	{
 		auto& camera = GetScene()->GetPrimaryCameraGameObject().GetComponent<CameraComponent>();

@@ -35,7 +35,7 @@ namespace AsteroidsGame
 		float m_InvulnerabilityTime = 0.0f;
 		const float m_MaxInvulnerability = 2.5f;
 
-		const float m_HypespaceCooldown = 10.0f;
+		const float m_HypespaceCooldown = 1.0f;
 		float m_HyperspaceCooldownTime = m_HypespaceCooldown;
 
 		const float m_Speed = 0.2f;

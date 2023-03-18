@@ -49,6 +49,13 @@ namespace AsteroidsGame
 			m_ActiveScene->DestroyGameObject(gameObject);
 		}
 		m_GameObjectsToDestroy.clear();
+
+		if (m_LargeSaucerSpawnTime >= m_MaxLargeSaucerSpawnTime)
+		{
+			SpawnSaucer(SaucerScript::Large);
+			m_LargeSaucerSpawnTime = 0.0f;
+		}
+		m_LargeSaucerSpawnTime += ts;
 	}
 
 	void GameLayer::OnEvent(Event& e)
@@ -65,14 +72,14 @@ namespace AsteroidsGame
 	void GameLayer::IncreaseScore(int inc)
 	{
 		m_Score += inc;
-		m_TenThousandScore += inc;
+		m_LevelScore += inc;
 
 		PlayerScript* playerScript = (PlayerScript*)m_Player.GetComponent<NativeScriptComponent>().Instance;
 
-		if (m_TenThousandScore >= m_NextLevelScore)
+		if (m_LevelScore >= m_NextLevelScore)
 		{
 			playerScript->AddLife();
-			m_TenThousandScore = m_TenThousandScore - m_NextLevelScore;
+			m_LevelScore = m_LevelScore - m_NextLevelScore;
 			SpawnSaucer(SaucerScript::Small);
 		}
 	}
@@ -94,7 +101,7 @@ namespace AsteroidsGame
 
 		glm::vec3 spawnPos = glm::vec3(xSpawnPos, ySpawnPos, 0.0f);
 
- 		GameObject saucer = GetScene()->CreateGameObject();
+ 		GameObject saucer = GetScene()->CreateGameObject("Saucer");
 		saucer.GetComponent<TransformComponent>().Translation = spawnPos;
 		saucer.AddComponent<NativeScriptComponent>().Bind<SaucerScript>(type);
 	}

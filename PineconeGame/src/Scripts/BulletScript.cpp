@@ -1,13 +1,15 @@
 #include "BulletScript.h"
 
 #include "AsteroidScript.h"
+#include "PlayerScript.h"
+#include "SaucerScript.h"
 #include "GameLayer.h"
 #include "Utils/Physics2D.h"
 
 namespace AsteroidsGame
 {
-	BulletScript::BulletScript(float angle)
-		: m_Angle(angle)
+	BulletScript::BulletScript(float angle, bool playerOwned)
+		: m_Angle(angle), m_PlayerOwned(playerOwned)
 	{
 		m_Velocity = glm::vec3(glm::cos(glm::radians(angle)), glm::sin(glm::radians(angle)), 0.0f);
 	}
@@ -41,6 +43,11 @@ namespace AsteroidsGame
 		}
 
 		CheckAsteroidCollision();
+
+		if (m_PlayerOwned)
+			CheckSaucerCollision();
+		else
+			CheckPlayerCollision();
 	}
 
 	void BulletScript::CheckAsteroidCollision()
@@ -51,11 +58,37 @@ namespace AsteroidsGame
 			AsteroidScript* asteroidScript = (AsteroidScript*)asteroid.GetComponent<NativeScriptComponent>().Instance;
 			if (Physics2D::CheckCircleCollision(GetGameObject(), asteroid))
 			{
-				asteroidScript->Destroy();
+				// Destroy the asteroid and only award a score if the bullet was shot by the player
+				asteroidScript->Destroy(m_PlayerOwned);
 
 				GameLayer::Get().DestroyGameObject(GetGameObject());
 				return;
 			}
+		}
+	}
+
+	void BulletScript::CheckSaucerCollision()
+	{
+		auto saucers = GetScene()->GetGameObjectsByTag("Saucer");
+		for (GameObject saucer : saucers)
+		{
+			SaucerScript* saucerScript = (SaucerScript*)saucer.GetComponent<NativeScriptComponent>().Instance;
+			if (Physics2D::CheckCircleCollision(GetGameObject(), saucer))
+			{
+				saucerScript->Damage();
+
+				GameLayer::Get().DestroyGameObject(GetGameObject());
+				return;
+			}
+		}
+	}
+
+	void BulletScript::CheckPlayerCollision()
+	{
+		GameObject player = GetScene()->GetGameObjectByTag("Player");
+		if (Physics2D::CheckCircleCollision(GetGameObject(), player))
+		{
+			((PlayerScript*)player.GetComponent<NativeScriptComponent>().Instance)->RemoveLife();
 		}
 	}
 

@@ -13,12 +13,15 @@ namespace AsteroidsGame
 		void OnDestroy() override;
 		void OnUpdate(Timestep ts) override;
 
+		void AddLife();
+		void RemoveLife();
+
 		int GetLives() const { return m_Lives; }
 	private:
 		void ShootBullet();
 		void CheckAsteroidCollision();
 		void Hyperspace();
-		void RemoveLife();
+
 		void MovePlayerOntoScreen();
 	private:
 		Ref<Texture2D> m_NormalTexture;

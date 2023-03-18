@@ -55,13 +55,15 @@ namespace AsteroidsGame
 
 	void UILayer::DrawLivesAndScore(glm::vec4& screenDimensions)
 	{
-		const float scoreHeight = 1.0f;
+		const float scale = 1.5f;
+		const float scoreHeight = 1.0f * scale;
 		const float offset = 1.0f;
 		const float separation = 0.25f;
+
 		float xPos = screenDimensions.x + offset;
 		float yPos = screenDimensions.z - offset;
 
-		glm::vec3 scale = glm::vec3(0.8f, 1.0f, 1.0f) * 0.75f;
+		glm::vec3 lifeScale = glm::vec3(0.8f, 1.0f, 1.0f) * 0.75f * scale;
 
 		glm::mat4 scorePos = glm::translate(glm::mat4(1.0f), glm::vec3(xPos - 0.25f, yPos, 1.0f))
 			* glm::scale(glm::mat4(1.0f), glm::vec3(scoreHeight));
@@ -69,9 +71,9 @@ namespace AsteroidsGame
 
 		for (int i = 0; i < m_PlayerScript->GetLives(); i++)
 		{
-			glm::vec3 pos = glm::vec3(xPos + ((scale.x + separation) * i), yPos - (scoreHeight / 2 + separation), 1.0f);
+			glm::vec3 pos = glm::vec3(xPos + ((lifeScale.x + separation) * i), yPos - (scoreHeight / 2 + separation), 1.0f);
 			glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos)
-				* glm::scale(glm::mat4(1.0f), scale);
+				* glm::scale(glm::mat4(1.0f), lifeScale);
 			Renderer2D::DrawQuad(transform, Resources::GetPlayerLifeTexture());
 		}
 	}

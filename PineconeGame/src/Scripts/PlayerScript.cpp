@@ -133,6 +133,11 @@ namespace AsteroidsGame
 		transform.Translation.y = rand() % (int)(orthoTop - orthoBottom + 1) + orthoBottom;
 	}
 
+	void PlayerScript::AddLife()
+	{
+		m_Lives++;
+	}
+
 	void PlayerScript::RemoveLife()
 	{
 		if (m_Lives > 0)

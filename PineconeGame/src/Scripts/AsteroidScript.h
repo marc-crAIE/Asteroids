@@ -25,8 +25,8 @@ namespace AsteroidsGame
 		void Split();
 		void MoveOntoScreen();
 	private:
-		const float m_MinSpeed = 3.0f;
-		const float m_SpeedIncAmount = 1.25f;
+		const float m_MinSpeed = 1.5f;
+		const float m_SpeedIncAmount = 1.75f;
 		const int m_MinSplitAngle = 4;
 		const int m_MaxSplitAngle = 12;
 

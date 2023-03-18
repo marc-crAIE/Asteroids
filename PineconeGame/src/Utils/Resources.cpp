@@ -6,6 +6,8 @@ namespace AsteroidsGame
 	Ref<Texture2D> Resources::s_Asteroid2;
 	Ref<Texture2D> Resources::s_Asteroid3;
 
+	Ref<Texture2D> Resources::s_Saucer;
+
 	Ref<Texture2D> Resources::s_PlayerLife;
 
 	void Resources::Init()
@@ -13,6 +15,8 @@ namespace AsteroidsGame
 		s_Asteroid1 = Texture2D::Create("assets/textures/Asteroid1.png");
 		s_Asteroid2 = Texture2D::Create("assets/textures/Asteroid2.png");
 		s_Asteroid3 = Texture2D::Create("assets/textures/Asteroid3.png");
+
+		s_Saucer = Texture2D::Create("assets/textures/Saucer.png");
 
 		s_PlayerLife = Texture2D::Create("assets/textures/PlayerLife.png");
 	}

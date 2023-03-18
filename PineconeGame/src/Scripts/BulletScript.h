@@ -27,6 +27,6 @@ namespace AsteroidsGame
 		const glm::vec3 m_Size = { 0.1f, 0.1f, 0.1f };
 
 		const float m_Speed = 25.0f;
-		const float m_MaxLifetime = 0.75f;
+		const float m_MaxLifetime = 1.25f;
 	};
 }

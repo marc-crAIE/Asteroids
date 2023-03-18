@@ -43,17 +43,20 @@ namespace AsteroidsGame
 		// Begin the 2D renderer as we want to draw some stuff in 2D
 		Renderer2D::BeginScene(camera);
 
-		if (GameLayer::Get().GetState() == GameState::Playing)
+		switch (GameLayer::Get().GetState())
 		{
+		case GameState::Playing:
 			DrawLivesAndScore(glm::vec4(orthoLeft, orthoRight, orthoTop, orthoBottom));
-		}
-		else if (GameLayer::Get().GetState() == GameState::MainMenu)
-		{
+			break;
+		case GameState::MainMenu:
 			DrawMainMenu(glm::vec4(orthoLeft, orthoRight, orthoTop, orthoBottom));
-		}
-		else if (GameLayer::Get().GetState() == GameState::GameOver)
-		{
+			break;
+		case GameState::GameOver:
 			DrawGameOver(glm::vec4(orthoLeft, orthoRight, orthoTop, orthoBottom));
+			break;
+		case GameState::Paused:
+			DrawPaused(glm::vec4(orthoLeft, orthoRight, orthoTop, orthoBottom));
+			break;
 		}
 
 		// End the 2D renderer
@@ -85,6 +88,25 @@ namespace AsteroidsGame
 		glm::mat4 gameOverTextTransform = glm::translate(glm::mat4(1.0f), glm::vec3(-6.0f, 0.0f, 1.0f))
 			* glm::scale(glm::mat4(1.0f), glm::vec3(3.0f));
 		Renderer2D::DrawString("Game Over", m_Font, gameOverTextTransform, glm::vec4(1.0f));
+
+		glm::mat4 playTextTransform = glm::translate(glm::mat4(1.0f), glm::vec3(-8.0f, -1.25f, 1.0f))
+			* glm::scale(glm::mat4(1.0f), glm::vec3(1.25f));
+		Renderer2D::DrawString("Press the spacebar to replay", m_Font, playTextTransform, glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
+
+		glm::mat4 escTextTransform = glm::translate(glm::mat4(1.0f), glm::vec3(-8.0f, -2.5f, 1.0f))
+			* glm::scale(glm::mat4(1.0f), glm::vec3(1.25f));
+		Renderer2D::DrawString("Press the escape key to exit", m_Font, escTextTransform, glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
+	}
+
+	void UILayer::DrawPaused(glm::vec4& screenDimensions)
+	{
+		glm::mat4 gameOverTextTransform = glm::translate(glm::mat4(1.0f), glm::vec3(-3.5f, 0.0f, 1.0f))
+			* glm::scale(glm::mat4(1.0f), glm::vec3(3.0f));
+		Renderer2D::DrawString("Paused", m_Font, gameOverTextTransform, glm::vec4(1.0f));
+
+		glm::mat4 escTextTransform = glm::translate(glm::mat4(1.0f), glm::vec3(-8.0f, -1.25f, 1.0f))
+			* glm::scale(glm::mat4(1.0f), glm::vec3(1.25f));
+		Renderer2D::DrawString("Press the escape key to resume", m_Font, escTextTransform, glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
 	}
 
 	void UILayer::DrawLivesAndScore(glm::vec4& screenDimensions)

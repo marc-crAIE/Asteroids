@@ -23,6 +23,7 @@ namespace AsteroidsGame
 		void DrawGameUI(glm::vec4& screenDimensions);
 		void DrawMainMenu(glm::vec4& screenDimensions);
 		void DrawGameOver(glm::vec4& screenDimensions);
+		void DrawPaused(glm::vec4& screenDimensions);
 
 		void DrawLivesAndScore(glm::vec4& screenDimensions);
 	private:

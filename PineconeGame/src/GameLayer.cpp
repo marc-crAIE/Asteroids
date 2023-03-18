@@ -42,26 +42,30 @@ namespace AsteroidsGame
 		Renderer2D::ResetStats();
 		RenderCommand::Clear();
 
-		m_ActiveScene->OnUpdate(ts);
-
-		for (auto gameObject : m_GameObjectsToDestroy)
+		if (m_GameState == GameState::Playing)
 		{
-			m_ActiveScene->DestroyGameObject(gameObject);
-		}
-		m_GameObjectsToDestroy.clear();
+			m_ActiveScene->OnUpdate(ts);
 
-		if (m_LargeSaucerSpawnTime >= m_MaxLargeSaucerSpawnTime)
-		{
-			SpawnSaucer(SaucerScript::Large);
-			m_LargeSaucerSpawnTime = 0.0f;
+			for (auto gameObject : m_GameObjectsToDestroy)
+			{
+				m_ActiveScene->DestroyGameObject(gameObject);
+			}
+			m_GameObjectsToDestroy.clear();
+
+			if (m_LargeSaucerSpawnTime >= m_MaxLargeSaucerSpawnTime)
+			{
+				SpawnSaucer(SaucerScript::Large);
+				m_LargeSaucerSpawnTime = 0.0f;
+			}
+			m_LargeSaucerSpawnTime += ts;
 		}
-		m_LargeSaucerSpawnTime += ts;
 	}
 
 	void GameLayer::OnEvent(Event& e)
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowResizeEvent>(PC_BIND_EVENT_FN(GameLayer::OnWindowResized));
+		dispatcher.Dispatch<KeyReleasedEvent>(PC_BIND_EVENT_FN(GameLayer::OnKeyReleased));
 	}
 
 	void GameLayer::DestroyGameObject(GameObject gameObject)
@@ -104,6 +108,16 @@ namespace AsteroidsGame
  		GameObject saucer = GetScene()->CreateGameObject("Saucer");
 		saucer.GetComponent<TransformComponent>().Translation = spawnPos;
 		saucer.AddComponent<NativeScriptComponent>().Bind<SaucerScript>(type);
+	}
+
+	bool GameLayer::OnKeyReleased(KeyReleasedEvent& e)
+	{
+		if (m_GameState == GameState::MainMenu)
+		{
+			if (e.GetKeyCode() == Key::Space)
+				SetState(GameState::Playing);
+		}
+		return false;
 	}
 
 	bool GameLayer::OnWindowResized(WindowResizeEvent& e)

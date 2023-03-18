@@ -140,12 +140,18 @@ namespace AsteroidsGame
 
 	void PlayerScript::RemoveLife()
 	{
-		if (m_Lives > 0)
+		if (m_Lives > 1)
+		{
 			m_Lives--;
-		GetComponent<TransformComponent>().Translation = glm::vec3(0.0f);
-		m_Velocity = glm::vec3(0.0f);
-		m_Invulnerable = true;
-		m_InvulnerabilityTime = 0.0f;
+			GetComponent<TransformComponent>().Translation = glm::vec3(0.0f);
+			m_Velocity = glm::vec3(0.0f);
+			m_Invulnerable = true;
+			m_InvulnerabilityTime = 0.0f;
+		}
+		else
+		{
+			GameLayer::Get().SetState(GameState::GameOver);
+		}
 	}
 
 	void PlayerScript::MovePlayerOntoScreen()

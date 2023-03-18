@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Pinecone.h>
+#include <Pinecone/Events/KeyEvent.h>
 
 #include "Scripts/SaucerScript.h"
 
@@ -11,6 +12,7 @@ namespace AsteroidsGame
 	enum class GameState
 	{
 		Playing = 0,
+		MainMenu,
 		GameOver
 	};
 
@@ -39,10 +41,11 @@ namespace AsteroidsGame
 	private:
 		void SpawnSaucer(SaucerScript::Type type);
 
+		bool OnKeyReleased(KeyReleasedEvent& e);
 		bool OnWindowResized(WindowResizeEvent& e);
 	private:
 		Ref<Scene> m_ActiveScene;
-		GameState m_GameState = GameState::Playing;
+		GameState m_GameState = GameState::MainMenu;
 
 		std::vector<GameObject> m_GameObjectsToDestroy;
 

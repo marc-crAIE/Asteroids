@@ -20,6 +20,10 @@ namespace AsteroidsGame
 		void OnUpdate(Timestep ts) override;
 		void OnEvent(Event& e) override;
 	private:
+		void DrawGameUI(glm::vec4& screenDimensions);
+		void DrawMainMenu(glm::vec4& screenDimensions);
+		void DrawGameOver(glm::vec4& screenDimensions);
+
 		void DrawLivesAndScore(glm::vec4& screenDimensions);
 	private:
 		PlayerScript* m_PlayerScript = nullptr;

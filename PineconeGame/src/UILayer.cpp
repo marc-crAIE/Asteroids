@@ -43,7 +43,18 @@ namespace AsteroidsGame
 		// Begin the 2D renderer as we want to draw some stuff in 2D
 		Renderer2D::BeginScene(camera);
 
-		DrawLivesAndScore(glm::vec4(orthoLeft, orthoRight, orthoTop, orthoBottom));
+		if (GameLayer::Get().GetState() == GameState::Playing)
+		{
+			DrawLivesAndScore(glm::vec4(orthoLeft, orthoRight, orthoTop, orthoBottom));
+		}
+		else if (GameLayer::Get().GetState() == GameState::MainMenu)
+		{
+			DrawMainMenu(glm::vec4(orthoLeft, orthoRight, orthoTop, orthoBottom));
+		}
+		else if (GameLayer::Get().GetState() == GameState::GameOver)
+		{
+			DrawGameOver(glm::vec4(orthoLeft, orthoRight, orthoTop, orthoBottom));
+		}
 
 		// End the 2D renderer
 		Renderer2D::EndScene();
@@ -51,6 +62,29 @@ namespace AsteroidsGame
 
 	void UILayer::OnEvent(Event& e)
 	{
+	}
+
+	void UILayer::DrawGameUI(glm::vec4& screenDimensions)
+	{
+		DrawLivesAndScore(screenDimensions);
+	}
+
+	void UILayer::DrawMainMenu(glm::vec4& screenDimensions)
+	{
+		glm::mat4 asteroidsTextTransform = glm::translate(glm::mat4(1.0f), glm::vec3(-6.0f, 0.0f, 1.0f))
+			* glm::scale(glm::mat4(1.0f), glm::vec3(3.0f));
+		Renderer2D::DrawString("Asteroids", m_Font, asteroidsTextTransform, glm::vec4(1.0f));
+
+		glm::mat4 playTextTransform = glm::translate(glm::mat4(1.0f), glm::vec3(-7.5f, -1.25f, 1.0f))
+			* glm::scale(glm::mat4(1.0f), glm::vec3(1.25f));
+		Renderer2D::DrawString("Press the spacebar to play", m_Font, playTextTransform, glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
+	}
+
+	void UILayer::DrawGameOver(glm::vec4& screenDimensions)
+	{
+		glm::mat4 gameOverTextTransform = glm::translate(glm::mat4(1.0f), glm::vec3(-6.0f, 0.0f, 1.0f))
+			* glm::scale(glm::mat4(1.0f), glm::vec3(3.0f));
+		Renderer2D::DrawString("Game Over", m_Font, gameOverTextTransform, glm::vec4(1.0f));
 	}
 
 	void UILayer::DrawLivesAndScore(glm::vec4& screenDimensions)

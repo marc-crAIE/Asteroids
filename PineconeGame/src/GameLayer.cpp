@@ -111,7 +111,7 @@ namespace AsteroidsGame
 		saucer.AddComponent<NativeScriptComponent>().Bind<SaucerScript>(type);
 	}
 
-	void GameLayer::ReplayGame()
+	void GameLayer::ResetGame()
 	{
 		m_Score = 0;
 		m_LevelScore = 0;
@@ -147,7 +147,22 @@ namespace AsteroidsGame
 			if (e.GetKeyCode() == Key::Space)
 			{
 				SetState(GameState::Playing);
-				ReplayGame();
+				ResetGame();
+				return true;
+			}
+			else if (e.GetKeyCode() == Key::Escape)
+			{
+				SetState(GameState::MainMenu);
+				// Prepare the game to be replayed from the main menu
+				ResetGame();
+				return true;
+			}
+		}
+		else
+		{
+			if (e.GetKeyCode() == Key::Escape)
+			{
+				SetState(m_GameState == GameState::Playing ? GameState::Paused : GameState::Playing);
 				return true;
 			}
 		}

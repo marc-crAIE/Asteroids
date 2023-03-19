@@ -13,7 +13,8 @@ namespace AsteroidsGame
 	{
 		Playing = 0,
 		MainMenu,
-		GameOver
+		GameOver,
+		Paused
 	};
 
 	class GameLayer : public Layer
@@ -41,7 +42,7 @@ namespace AsteroidsGame
 	private:
 		void SpawnSaucer(SaucerScript::Type type);
 
-		void ReplayGame();
+		void ResetGame();
 
 		bool OnKeyReleased(KeyReleasedEvent& e);
 		bool OnWindowResized(WindowResizeEvent& e);

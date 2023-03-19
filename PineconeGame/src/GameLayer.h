@@ -56,6 +56,7 @@ namespace AsteroidsGame
 		GameObject m_Camera;
 		GameObject m_Player;
 		GameObject m_AsteroidSpawner;
+		GameObject m_ParticleSpawner;
 
 		ParticleSystem m_ParticleSystem;
 		ParticleProps m_Particle;

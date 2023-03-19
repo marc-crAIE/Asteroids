@@ -3,6 +3,7 @@
 #include "Scripts/PlayerScript.h"
 #include "Scripts/AsteroidScript.h"
 #include "Scripts/AsteroidSpawnerScript.h"
+#include "Scripts/ParticleSpawnerScript.h"
 
 #include <random>
 
@@ -31,6 +32,9 @@ namespace AsteroidsGame
 
 		m_AsteroidSpawner = m_ActiveScene->CreateGameObject("AsteroidSpawner");
 		m_AsteroidSpawner.AddComponent<NativeScriptComponent>().Bind<AsteroidSpawnerScript>();
+
+		m_ParticleSpawner = m_ActiveScene->CreateGameObject("ParticleSpawner");
+		m_ParticleSpawner.AddComponent<NativeScriptComponent>().Bind<ParticleSpawnerScript>();
 
 		m_Particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
 		m_Particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
@@ -91,9 +95,7 @@ namespace AsteroidsGame
 		if (spawnParticles && gameObject.HasComponent<TransformComponent>())
 		{
 			auto& transform = gameObject.GetComponent<TransformComponent>();
-			m_Particle.Position = { transform.Translation.x, transform.Translation.y };
-			for (int i = 0; i < 8; i++)
-				m_ParticleSystem.Emit(m_Particle);
+			((ParticleSpawnerScript*)m_ParticleSpawner.GetComponent<NativeScriptComponent>().Instance)->Emit(transform.Translation, 8);
 
 		}
 	}

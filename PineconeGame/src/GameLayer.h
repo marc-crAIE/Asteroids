@@ -4,6 +4,7 @@
 #include <Pinecone/Events/KeyEvent.h>
 
 #include "Scripts/SaucerScript.h"
+#include "Utils/ParticleSystem.h"
 
 using namespace Pinecone;
 
@@ -20,7 +21,7 @@ namespace AsteroidsGame
 	class GameLayer : public Layer
 	{
 	public:
-		GameLayer() : Layer("GameLayer") {}
+		GameLayer() : Layer("GameLayer"), m_ParticleSystem(10000) {}
 		~GameLayer() = default;
 
 		void OnAttach() override;
@@ -29,7 +30,7 @@ namespace AsteroidsGame
 		void OnUpdate(Timestep ts) override;
 		void OnEvent(Event& e) override;
 
-		void DestroyGameObject(GameObject gameObject);
+		void DestroyGameObject(GameObject gameObject, bool spawnParticles = true);
 
 		void IncreaseScore(int inc);
 		void SetState(GameState state) { m_GameState = state; }
@@ -55,6 +56,9 @@ namespace AsteroidsGame
 		GameObject m_Camera;
 		GameObject m_Player;
 		GameObject m_AsteroidSpawner;
+
+		ParticleSystem m_ParticleSystem;
+		ParticleProps m_Particle;
 
 		int m_Score = 0;
 		int m_LevelScore = 0;

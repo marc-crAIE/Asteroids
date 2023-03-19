@@ -31,6 +31,14 @@ namespace AsteroidsGame
 
 		m_AsteroidSpawner = m_ActiveScene->CreateGameObject("AsteroidSpawner");
 		m_AsteroidSpawner.AddComponent<NativeScriptComponent>().Bind<AsteroidSpawnerScript>();
+
+		m_Particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
+		m_Particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
+		m_Particle.SizeBegin = 0.3f, m_Particle.SizeVariation = 0.15f, m_Particle.SizeEnd = 0.0f;
+		m_Particle.LifeTime = 1.0f;
+		m_Particle.Velocity = { 0.0f, 0.0f };
+		m_Particle.VelocityVariation = { 3.0f, 3.0f };
+		m_Particle.Position = { 0.0f, 0.0f };
 	}
 
 	void GameLayer::OnDetach()
@@ -42,6 +50,32 @@ namespace AsteroidsGame
 	{
 		Renderer2D::ResetStats();
 		RenderCommand::Clear();
+
+		auto camera = m_Camera.GetComponent<CameraComponent>().Camera;
+
+		if (Input::IsMouseButtonPressed(Mouse::ButtonLeft))
+		{
+			auto pos = Input::GetMousePosition();
+			auto x = pos.x;
+			auto y = pos.y;
+			auto width = Application::Get().GetWindow().GetWidth();
+			auto height = Application::Get().GetWindow().GetHeight();
+
+			float orthoSize = camera.GetOrthographicSize();
+			float aspectRatio = camera.GetAspectRatio();
+
+			x = (x / width) * (orthoSize * aspectRatio) - (orthoSize * aspectRatio) * 0.5f;
+			y = orthoSize * 0.5f - (y / height) * orthoSize;
+			m_Particle.Position = { x, y };
+
+			glm::vec2 mousePos = Input::GetMousePosition();
+			for (int i = 0; i < 5; i++)
+				m_ParticleSystem.Emit(m_Particle);
+		}
+
+		Renderer2D::BeginScene(camera);
+		m_ParticleSystem.OnUpdate(ts);
+		Renderer2D::EndScene();
 
 		if (m_GameState == GameState::Playing)
 		{
@@ -69,7 +103,7 @@ namespace AsteroidsGame
 		dispatcher.Dispatch<KeyReleasedEvent>(PC_BIND_EVENT_FN(GameLayer::OnKeyReleased));
 	}
 
-	void GameLayer::DestroyGameObject(GameObject gameObject)
+	void GameLayer::DestroyGameObject(GameObject gameObject, bool spawnParticles = true)
 	{
 		m_GameObjectsToDestroy.push_back(gameObject);
 	}

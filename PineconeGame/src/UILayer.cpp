@@ -74,39 +74,27 @@ namespace AsteroidsGame
 
 	void UILayer::DrawMainMenu(glm::vec4& screenDimensions)
 	{
-		glm::mat4 asteroidsTextTransform = glm::translate(glm::mat4(1.0f), glm::vec3(-6.0f, 0.0f, 1.0f))
-			* glm::scale(glm::mat4(1.0f), glm::vec3(3.0f));
-		Renderer2D::DrawString("Asteroids", m_Font, asteroidsTextTransform, glm::vec4(1.0f));
+		DrawString("Asteroids", glm::vec2(-6.0f, 0.0f), glm::vec2(3.0f));
+		DrawString("Press the spacebar to play", glm::vec2(-7.5f, -1.25f), glm::vec2(1.25f), glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
 
-		glm::mat4 playTextTransform = glm::translate(glm::mat4(1.0f), glm::vec3(-7.5f, -1.25f, 1.0f))
-			* glm::scale(glm::mat4(1.0f), glm::vec3(1.25f));
-		Renderer2D::DrawString("Press the spacebar to play", m_Font, playTextTransform, glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
+		DrawString("Controls", glm::vec2(-2.75f, -5.0f), glm::vec2(1.5f), glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
+		DrawString("A and D to rotate", glm::vec2(-5.35f, -6.25f), glm::vec2(1.25f), glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
+		DrawString("W to thrust", glm::vec2(-3.25f, -7.5f), glm::vec2(1.25f), glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
+		DrawString("SPACE to shoot", glm::vec2(-4.25f, -8.75f), glm::vec2(1.25f), glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
+		DrawString("V to hyperspace", glm::vec2(-4.65f, -10.0f), glm::vec2(1.25f), glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
 	}
 
 	void UILayer::DrawGameOver(glm::vec4& screenDimensions)
 	{
-		glm::mat4 gameOverTextTransform = glm::translate(glm::mat4(1.0f), glm::vec3(-6.0f, 0.0f, 1.0f))
-			* glm::scale(glm::mat4(1.0f), glm::vec3(3.0f));
-		Renderer2D::DrawString("Game Over", m_Font, gameOverTextTransform, glm::vec4(1.0f));
-
-		glm::mat4 playTextTransform = glm::translate(glm::mat4(1.0f), glm::vec3(-8.0f, -1.25f, 1.0f))
-			* glm::scale(glm::mat4(1.0f), glm::vec3(1.25f));
-		Renderer2D::DrawString("Press the spacebar to replay", m_Font, playTextTransform, glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
-
-		glm::mat4 escTextTransform = glm::translate(glm::mat4(1.0f), glm::vec3(-8.0f, -2.5f, 1.0f))
-			* glm::scale(glm::mat4(1.0f), glm::vec3(1.25f));
-		Renderer2D::DrawString("Press the escape key to exit", m_Font, escTextTransform, glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
+		DrawString("Game Over", glm::vec2(-6.0f, 0.0f), glm::vec2(3.0f));
+		DrawString("Press the spacebar to replay", glm::vec2(-8.0f, -1.25f), glm::vec2(1.25f), glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
+		DrawString("Press the escape key to exit", glm::vec2(-8.0f, -2.5f), glm::vec2(1.25f), glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
 	}
 
 	void UILayer::DrawPaused(glm::vec4& screenDimensions)
 	{
-		glm::mat4 gameOverTextTransform = glm::translate(glm::mat4(1.0f), glm::vec3(-3.5f, 0.0f, 1.0f))
-			* glm::scale(glm::mat4(1.0f), glm::vec3(3.0f));
-		Renderer2D::DrawString("Paused", m_Font, gameOverTextTransform, glm::vec4(1.0f));
-
-		glm::mat4 escTextTransform = glm::translate(glm::mat4(1.0f), glm::vec3(-8.0f, -1.25f, 1.0f))
-			* glm::scale(glm::mat4(1.0f), glm::vec3(1.25f));
-		Renderer2D::DrawString("Press the escape key to resume", m_Font, escTextTransform, glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
+		DrawString("Paused", glm::vec2(-3.5f, 0.0f), glm::vec2(3.0f));
+		DrawString("Press the escape key to resume", glm::vec2(-8.0f, -1.25f), glm::vec2(1.25f), glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
 	}
 
 	void UILayer::DrawLivesAndScore(glm::vec4& screenDimensions)
@@ -121,9 +109,7 @@ namespace AsteroidsGame
 
 		glm::vec3 lifeScale = glm::vec3(0.8f, 1.0f, 1.0f) * 0.75f * scale;
 
-		glm::mat4 scorePos = glm::translate(glm::mat4(1.0f), glm::vec3(xPos - 0.25f, yPos, 1.0f))
-			* glm::scale(glm::mat4(1.0f), glm::vec3(scoreHeight));
-		Renderer2D::DrawString(std::to_string(GameLayer::Get().GetScore()), m_Font, scorePos, glm::vec4(1.0f));
+		DrawString(std::to_string(GameLayer::Get().GetScore()), glm::vec2(xPos - 0.25f, yPos), glm::vec2(scoreHeight));
 
 		for (int i = 0; i < m_PlayerScript->GetLives(); i++)
 		{
@@ -132,5 +118,12 @@ namespace AsteroidsGame
 				* glm::scale(glm::mat4(1.0f), lifeScale);
 			Renderer2D::DrawQuad(transform, Resources::GetPlayerLifeTexture());
 		}
+	}
+
+	void UILayer::DrawString(const std::string& text, glm::vec2& position, glm::vec2& scale, glm::vec4& color)
+	{
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(position.x, position.y, 1.0f))
+			* glm::scale(glm::mat4(1.0f), glm::vec3(scale.x, scale.y, 1.0f));
+		Renderer2D::DrawString(text, m_Font, transform, color);
 	}
 }

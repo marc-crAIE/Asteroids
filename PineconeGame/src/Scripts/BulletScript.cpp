@@ -38,7 +38,7 @@ namespace AsteroidsGame
 		m_Lifetime += ts;
 		if (m_Lifetime >= m_MaxLifetime)
 		{
-			GameLayer::Get().DestroyGameObject(GetGameObject());
+			GameLayer::Get().DestroyGameObject(GetGameObject(), false);
 			return;
 		}
 
@@ -61,7 +61,7 @@ namespace AsteroidsGame
 				// Destroy the asteroid and only award a score if the bullet was shot by the player
 				asteroidScript->Destroy(m_PlayerOwned);
 
-				GameLayer::Get().DestroyGameObject(GetGameObject());
+				GameLayer::Get().DestroyGameObject(GetGameObject(), false);
 				return;
 			}
 		}
@@ -77,7 +77,7 @@ namespace AsteroidsGame
 			{
 				saucerScript->Damage();
 
-				GameLayer::Get().DestroyGameObject(GetGameObject());
+				GameLayer::Get().DestroyGameObject(GetGameObject(), false);
 				return;
 			}
 		}

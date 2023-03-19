@@ -53,26 +53,6 @@ namespace AsteroidsGame
 
 		auto camera = m_Camera.GetComponent<CameraComponent>().Camera;
 
-		if (Input::IsMouseButtonPressed(Mouse::ButtonLeft))
-		{
-			auto pos = Input::GetMousePosition();
-			auto x = pos.x;
-			auto y = pos.y;
-			auto width = Application::Get().GetWindow().GetWidth();
-			auto height = Application::Get().GetWindow().GetHeight();
-
-			float orthoSize = camera.GetOrthographicSize();
-			float aspectRatio = camera.GetAspectRatio();
-
-			x = (x / width) * (orthoSize * aspectRatio) - (orthoSize * aspectRatio) * 0.5f;
-			y = orthoSize * 0.5f - (y / height) * orthoSize;
-			m_Particle.Position = { x, y };
-
-			glm::vec2 mousePos = Input::GetMousePosition();
-			for (int i = 0; i < 5; i++)
-				m_ParticleSystem.Emit(m_Particle);
-		}
-
 		Renderer2D::BeginScene(camera);
 		m_ParticleSystem.OnUpdate(ts);
 		Renderer2D::EndScene();
@@ -103,9 +83,19 @@ namespace AsteroidsGame
 		dispatcher.Dispatch<KeyReleasedEvent>(PC_BIND_EVENT_FN(GameLayer::OnKeyReleased));
 	}
 
-	void GameLayer::DestroyGameObject(GameObject gameObject, bool spawnParticles = true)
+	void GameLayer::DestroyGameObject(GameObject gameObject, bool spawnParticles)
 	{
 		m_GameObjectsToDestroy.push_back(gameObject);
+
+		// All game objects should have a transform component by default but check for it anyway
+		if (spawnParticles && gameObject.HasComponent<TransformComponent>())
+		{
+			auto& transform = gameObject.GetComponent<TransformComponent>();
+			m_Particle.Position = { transform.Translation.x, transform.Translation.y };
+			for (int i = 0; i < 8; i++)
+				m_ParticleSystem.Emit(m_Particle);
+
+		}
 	}
 
 	void GameLayer::IncreaseScore(int inc)

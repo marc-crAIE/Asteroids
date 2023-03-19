@@ -35,14 +35,6 @@ namespace AsteroidsGame
 
 		m_ParticleSpawner = m_ActiveScene->CreateGameObject("ParticleSpawner");
 		m_ParticleSpawner.AddComponent<NativeScriptComponent>().Bind<ParticleSpawnerScript>();
-
-		m_Particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
-		m_Particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
-		m_Particle.SizeBegin = 0.3f, m_Particle.SizeVariation = 0.15f, m_Particle.SizeEnd = 0.0f;
-		m_Particle.LifeTime = 1.0f;
-		m_Particle.Velocity = { 0.0f, 0.0f };
-		m_Particle.VelocityVariation = { 3.0f, 3.0f };
-		m_Particle.Position = { 0.0f, 0.0f };
 	}
 
 	void GameLayer::OnDetach()
@@ -54,12 +46,6 @@ namespace AsteroidsGame
 	{
 		Renderer2D::ResetStats();
 		RenderCommand::Clear();
-
-		auto camera = m_Camera.GetComponent<CameraComponent>().Camera;
-
-		Renderer2D::BeginScene(camera);
-		m_ParticleSystem.OnUpdate(ts);
-		Renderer2D::EndScene();
 
 		if (m_GameState == GameState::Playing)
 		{

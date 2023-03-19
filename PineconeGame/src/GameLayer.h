@@ -21,7 +21,7 @@ namespace AsteroidsGame
 	class GameLayer : public Layer
 	{
 	public:
-		GameLayer() : Layer("GameLayer"), m_ParticleSystem(10000) {}
+		GameLayer() : Layer("GameLayer") {}
 		~GameLayer() = default;
 
 		void OnAttach() override;
@@ -57,9 +57,6 @@ namespace AsteroidsGame
 		GameObject m_Player;
 		GameObject m_AsteroidSpawner;
 		GameObject m_ParticleSpawner;
-
-		ParticleSystem m_ParticleSystem;
-		ParticleProps m_Particle;
 
 		int m_Score = 0;
 		int m_LevelScore = 0;

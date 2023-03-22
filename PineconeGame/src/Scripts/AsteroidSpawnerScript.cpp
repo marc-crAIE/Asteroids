@@ -12,7 +12,7 @@ namespace AsteroidsGame
 
 	void AsteroidSpawnerScript::OnCreate()
 	{
-
+		// TODO: Spawn an initial number of asteroids
 	}
 
 	void AsteroidSpawnerScript::OnDestroy()
@@ -22,13 +22,20 @@ namespace AsteroidsGame
 
 	void AsteroidSpawnerScript::OnUpdate(Timestep ts)
 	{
+		// Get all of the asteroids
 		auto asteroids = GetScene()->GetGameObjectsByTag("Asteroid");
 
+		// Check to make sure we have not exceeded the max number of asteroids to spawn
+		// Note: Does not matter if splitting asteroids passes this number. Really m_MaxAsteroids is more
+		//		 like m_MinAsteroids
 		if (asteroids.size() < m_MaxAsteroids)
 		{
+			// Increment the elapsed time since the last asteroid spawn
 			m_LastAsteroidSpawn += ts;
+			// If the last time an asteroid was spawned passed the time for another one to spawn
 			if (m_LastAsteroidSpawn >= m_AsteroidSpawnTime)
 			{
+				// Spawn a new asteroid
 				SpawnAsteroid();
 			}
 		}
@@ -36,19 +43,24 @@ namespace AsteroidsGame
 
 	void AsteroidSpawnerScript::Reset()
 	{
+		// Reset the values to default
 		m_LastAsteroidSpawn = 0.0f;
 	}
 
 	void AsteroidSpawnerScript::SpawnAsteroid()
 	{
+		// Pick a random angle between 0 and 360
 		float angle = s_UniformDistribution(s_Engine);
 
+		// Create a new asteroid game object
 		GameObject asteroid = GetScene()->CreateGameObject("Asteroid");
+		// Add a NativeScriptComponent and bind AsteroidScript to it with angle passed as an argument
 		asteroid.AddComponent<NativeScriptComponent>().Bind<AsteroidScript>(angle);
 
-		auto& transform = asteroid.GetComponent<TransformComponent>();
+		// Get the primary camera component
 		auto& camera = GetScene()->GetPrimaryCameraGameObject().GetComponent<CameraComponent>().Camera;
 
+		// TODO: See the comment inside UILayer::OnUpdate to know how this can be improved
 		float orthoSize = camera.GetOrthographicSize();
 		float aspectRatio = camera.GetAspectRatio();
 
@@ -56,6 +68,9 @@ namespace AsteroidsGame
 		float orthoRight = orthoSize * aspectRatio * 0.5f;
 		float orthoBottom = -orthoSize * 0.5f;
 		float orthoTop = orthoSize * 0.5f;
+
+		// Get the transform of the asteroid
+		auto& transform = asteroid.GetComponent<TransformComponent>();
 
 		// Right side of the screen
 		if (angle > 315 || angle <= 45)

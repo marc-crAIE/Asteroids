@@ -18,10 +18,22 @@ namespace AsteroidsGame
 	class ParticleSystem
 	{
 	public:
+		/// <summary>
+		/// ParticleSystem constructor
+		/// </summary>
+		/// <param name="maxParticles">The maximum number of particles to display</param>
 		ParticleSystem(uint32_t maxParticles);
 
+		/// <summary>
+		/// Update the particles on screen and render them
+		/// </summary>
+		/// <param name="ts">The amount of time passed (in seconds)</param>
 		void OnUpdate(Timestep ts);
 
+		/// <summary>
+		/// Emit a particle
+		/// </summary>
+		/// <param name="particleProps">The particle properties</param>
 		void Emit(const ParticleProps& particleProps);
 	private:
 		struct Particle

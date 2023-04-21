@@ -133,7 +133,7 @@ namespace AsteroidsGame
 		for (GameObject asteroid : asteroids)
 		{
 			// Get the asteroid script
-			AsteroidScript* asteroidScript = (AsteroidScript*)asteroid.GetComponent<NativeScriptComponent>().Instance;
+			AsteroidScript* asteroidScript = dynamic_cast<AsteroidScript*>(asteroid.GetComponent<NativeScriptComponent>().Instance);
 			// Check if the player is colliding with the asteroid
 			if (Physics2D::CheckCircleCollision(GetGameObject(), asteroid))
 			{
@@ -176,7 +176,7 @@ namespace AsteroidsGame
 	{
 		if (m_Lives > 1)
 		{
-			// If the player has more than one life, decrease the numeber of lives
+			// If the player has more than one life, decrease the number of lives
 			m_Lives--;
 			// Then reset their position to the center of the screen and make them invulnerable
 			GetComponent<TransformComponent>().Translation = glm::vec3(0.0f);

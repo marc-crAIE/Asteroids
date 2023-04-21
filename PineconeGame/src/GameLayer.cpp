@@ -145,6 +145,36 @@ namespace AsteroidsGame
 		}
 	}
 
+	void GameLayer::SetState(GameState state)
+	{
+		// If the game state requested is GameOver, make sure the players score is not a new highscore
+		if (state == GameState::GameOver && m_Score > 0)
+		{
+			// Get the highscores
+			auto scores = m_UserScores.GetScores();
+			// Check to make sure there has been a highscore submitted before
+			if (scores.size() > 0)
+			{
+				// Check if the previous highscore is less than the current score
+				if (scores[0].Score < m_Score)
+				{
+					// Submit a new highscore
+					m_GameState = GameState::SubmitHighscore;
+					return;
+				}
+			}
+			else
+			{
+				// Otherwise we will submit the first one
+				m_GameState = GameState::SubmitHighscore;
+				return;
+			}
+		}
+
+		// Set the game state
+		m_GameState = state;
+	}
+
 	void GameLayer::SpawnSaucer(SaucerScript::Type type)
 	{
 		// Grab the camera component
@@ -210,6 +240,40 @@ namespace AsteroidsGame
 			{
 				SetState(GameState::Playing);
 				return true;
+			}
+		}
+		else if (m_GameState == GameState::SubmitHighscore)
+		{
+			// If the enter key is pressed, submit the score
+			if (e.GetKeyCode() == Key::Enter)
+			{
+				// Make sure the player has entered a name, if so submit the score
+				if (m_PlayerName.size() > 0)
+				{
+					m_UserScores.AddScore(m_PlayerName, m_Score);
+					m_UserScores.Save();
+				}
+				// Set the game to be game over
+				SetState(GameState::GameOver);
+			}
+			else if (e.GetKeyCode() == Key::Backspace)
+			{
+				// Remove the last character from te player name
+				if (m_PlayerName.size() > 0)
+					m_PlayerName.pop_back();
+			}
+			else if (m_PlayerName.size() < m_MaxPlayerNameSize)
+			{
+				// Make sure that the user has entered a valid character
+				// These are characters for A-Z and 0-9
+				if (e.GetKeyCode() >= Key::A && e.GetKeyCode() <= Key::Z)
+				{
+					m_PlayerName += e.GetKeyCode();
+				}
+				else if (e.GetKeyCode() >= Key::D0 && e.GetKeyCode() <= Key::D9)
+				{
+					m_PlayerName += std::to_string(e.GetKeyCode() - Key::D0);
+				}
 			}
 		}
 		else if (m_GameState == GameState::GameOver)

@@ -6,6 +6,8 @@
 #include "Scripts/SaucerScript.h"
 #include "Utils/ParticleSystem.h"
 
+#include "UserScore.h"
+
 using namespace Pinecone;
 
 namespace AsteroidsGame
@@ -14,6 +16,7 @@ namespace AsteroidsGame
 	{
 		Playing = 0,
 		MainMenu,
+		SubmitHighscore,
 		GameOver,
 		Paused
 	};
@@ -24,7 +27,9 @@ namespace AsteroidsGame
 		/// <summary>
 		/// The GameLayer constructor. Sets the layer name to be "GameLayer"
 		/// </summary>
-		GameLayer() : Layer("GameLayer") {}
+		GameLayer() : Layer("GameLayer"), 
+			m_UserScores("user_scores.dat") 
+		{}
 		/// <summary>
 		/// The GameLayer deconstructor
 		/// </summary>
@@ -42,7 +47,7 @@ namespace AsteroidsGame
 		/// <summary>
 		/// Update the active game scene if playing, destroy game objects, and spawn large saucers
 		/// </summary>
-		/// <param name="ts"></param>
+		/// <param name="ts">The time passed (in seconds)</param>
 		void OnUpdate(Timestep ts) override;
 		/// <summary>
 		/// Handle our events from the application
@@ -66,7 +71,7 @@ namespace AsteroidsGame
 		/// Change the state of the game to a specified game state
 		/// </summary>
 		/// <param name="state">The game state to change to</param>
-		void SetState(GameState state) { m_GameState = state; }
+		void SetState(GameState state);
 		/// <summary>
 		/// Get the current game state
 		/// </summary>
@@ -83,6 +88,17 @@ namespace AsteroidsGame
 		/// </summary>
 		/// <returns>The game score</returns>
 		int GetScore() const { return m_Score; }
+		/// <summary>
+		/// Get a list of scores ordered from highest score to lowest
+		/// </summary>
+		/// <returns>The scores listed from highest to lowest</returns>
+		std::vector<UserScore> GetScores() const { return m_UserScores.GetScores(); }
+
+		/// <summary>
+		/// Gets the currently entered player name
+		/// </summary>
+		/// <returns>The player name</returns>
+		std::string GetPlayerName() const { return m_PlayerName; }
 
 		/// <summary>
 		/// Get the instance of the Gamelayer. GameLayer has a static instance of itself as I also use it
@@ -130,12 +146,16 @@ namespace AsteroidsGame
 		GameObject m_AsteroidSpawner;
 		GameObject m_ParticleSpawner;
 
+		UserScores m_UserScores;
+		std::string m_PlayerName = "";
+		const int m_MaxPlayerNameSize = 8;
+
 		int m_Score = 0;
 		int m_LevelScore = 0;
 		const int m_NextLevelScore = 10000;
 
 		float m_LargeSaucerSpawnTime = 0.0f;
-		const float m_MaxLargeSaucerSpawnTime = 90.0f;
+		const float m_MaxLargeSaucerSpawnTime = 30.0f;
 	private:
 		static GameLayer* s_Instance;
 		static std::string s_GameObjectNames[];

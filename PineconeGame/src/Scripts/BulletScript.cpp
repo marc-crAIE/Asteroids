@@ -65,12 +65,13 @@ namespace AsteroidsGame
 		for (GameObject asteroid : asteroids)
 		{
 			// Get the asteroid script
-			AsteroidScript* asteroidScript = (AsteroidScript*)asteroid.GetComponent<NativeScriptComponent>().Instance;
+			AsteroidScript* asteroidScript = dynamic_cast<AsteroidScript*>(asteroid.GetComponent<NativeScriptComponent>().Instance);
 			// Check for collision
 			if (Physics2D::CheckCircleCollision(GetGameObject(), asteroid))
 			{
 				// Destroy the asteroid and only award a score if the bullet was shot by the player
-				asteroidScript->Destroy(m_PlayerOwned);
+				if (asteroidScript)
+					asteroidScript->Destroy(m_PlayerOwned);
 
 				// Destroy ourselves :(
 				GameLayer::Get().DestroyGameObject(GetGameObject(), false);
@@ -91,12 +92,13 @@ namespace AsteroidsGame
 		for (GameObject saucer : saucers)
 		{
 			// Get the saucer script
-			SaucerScript* saucerScript = (SaucerScript*)saucer.GetComponent<NativeScriptComponent>().Instance;
+			SaucerScript* saucerScript = dynamic_cast<SaucerScript*>(saucer.GetComponent<NativeScriptComponent>().Instance);
 			// Check for collision
 			if (Physics2D::CheckCircleCollision(GetGameObject(), saucer))
 			{
 				// Damage the saucer
-				saucerScript->Damage();
+				if (saucerScript)
+					saucerScript->Damage();
 
 				// Destroy ourselves :(
 				GameLayer::Get().DestroyGameObject(GetGameObject(), false);

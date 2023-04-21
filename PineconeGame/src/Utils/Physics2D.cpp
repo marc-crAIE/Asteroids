@@ -58,8 +58,8 @@ namespace AsteroidsGame
 			auto& bTransform = b.GetComponent<TransformComponent>();
 
 			// Get the distance between the center of both game objects
-			float y = bTransform.Translation.y - aTransform.Translation.y;
 			float x = bTransform.Translation.x - aTransform.Translation.x;
+			float y = bTransform.Translation.y - aTransform.Translation.y;
 			float distance = x * x + y * y;
 
 			// Get the radius of both game objects by getting the dot product of the x and y values for their scale

@@ -46,6 +46,11 @@ namespace AsteroidsGame
 		/// <param name="screenDimensions"></param>
 		void DrawMainMenu(glm::vec4& screenDimensions);
 		/// <summary>
+		/// Draw the UI for when the game is in a submit highscore state
+		/// </summary>
+		/// <param name="screenDimensions"></param>
+		void DrawSubmitHighscore(glm::vec4& screenDimensions);
+		/// <summary>
 		/// Draw the UI for when the game is in a game over state
 		/// </summary>
 		/// <param name="screenDimensions"></param>

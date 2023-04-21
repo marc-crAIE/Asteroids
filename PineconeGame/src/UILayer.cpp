@@ -60,6 +60,9 @@ namespace AsteroidsGame
 		case GameState::MainMenu:
 			DrawMainMenu(glm::vec4(orthoLeft, orthoRight, orthoTop, orthoBottom));
 			break;
+		case GameState::SubmitHighscore:
+			DrawSubmitHighscore(glm::vec4(orthoLeft, orthoRight, orthoTop, orthoBottom));
+			break;
 		case GameState::GameOver:
 			DrawGameOver(glm::vec4(orthoLeft, orthoRight, orthoTop, orthoBottom));
 			break;
@@ -110,6 +113,18 @@ namespace AsteroidsGame
 		// Another TODO would be to have the Font class have something like a MeasureText function that takes
 		// in a string, font, and the scale to get the vec2 size of the font when drawn.
 
+		DrawString("Highscores", glm::vec2(screenDimensions.x + 0.5f, screenDimensions.z - 1.5f), glm::vec2(2.0f));
+
+		auto scores = GameLayer::Get().GetScores();
+		for (int i = 0; i < 3; i++)
+		{
+			if (i < scores.size())
+			{
+				std::string str = scores[i].Name + ": " + std::to_string(scores[i].Score);
+				DrawString(str, glm::vec2(screenDimensions.x + 0.5f, screenDimensions.z - 2.5f - i), glm::vec2(1.25f), glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
+			}
+		}		
+
 		DrawString("Asteroids", glm::vec2(-6.0f, 0.0f), glm::vec2(3.0f));
 		DrawString("Press the spacebar to play", glm::vec2(-7.5f, -1.25f), glm::vec2(1.25f), glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
 
@@ -118,6 +133,14 @@ namespace AsteroidsGame
 		DrawString("W to thrust", glm::vec2(-3.25f, -7.5f), glm::vec2(1.25f), glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
 		DrawString("SPACE to shoot", glm::vec2(-4.25f, -8.75f), glm::vec2(1.25f), glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
 		DrawString("V to hyperspace", glm::vec2(-4.65f, -10.0f), glm::vec2(1.25f), glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
+	}
+
+	void UILayer::DrawSubmitHighscore(glm::vec4& screenDimensions)
+	{
+		DrawString(std::to_string(GameLayer::Get().GetScore()), glm::vec2(screenDimensions.x + 5.0f, 7.5f), glm::vec2(2.0f));
+		DrawString("New Highscore!", glm::vec2(screenDimensions.x + 5.0f, 5.0f), glm::vec2(2.0f));
+		DrawString("Type your name, press enter to submit score", glm::vec2(screenDimensions.x + 5.0f, 2.5f), glm::vec2(1.5f), glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
+		DrawString(GameLayer::Get().GetPlayerName(), glm::vec2(screenDimensions.x + 5.0f, 0.0f), glm::vec2(2.0f));
 	}
 
 	void UILayer::DrawGameOver(glm::vec4& screenDimensions)
